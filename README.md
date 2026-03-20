@@ -8,7 +8,7 @@ Each snapshot is listed in the picker; the preview pane shows a live diff agains
 
 - Neovim ≥ 0.9
 - [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-- [`zsd`](https://github.com/j-keck/zsd) on your `$PATH` (see the accompanying `PKGBUILD` for Arch Linux)
+- [`zsd`](https://github.com/j-keck/zsd) on your `$PATH` (If you're on Arch Linux, I package it in the AUR)
 - Files must live on a ZFS dataset with snapshots
 
 ## Installation
