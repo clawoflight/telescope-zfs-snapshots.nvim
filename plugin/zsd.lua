@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 Bennett Piater
+-- SPDX-License-Identifier: MIT
+--
 -- plugin/zsd.lua
 -- Entrypoint: loaded automatically by Neovim's runtime.
 -- Registers :ZfsSnapshots command and loads the telescope extension.

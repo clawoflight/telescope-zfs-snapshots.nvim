@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 Bennett Piater
+SPDX-License-Identifier: MIT
+-->
+
 # telescope-zfs-snapshots.nvim
 
 Browse the ZFS snapshot history of any file using [zsd](https://github.com/j-keck/zsd) and [Telescope](https://github.com/nvim-telescope/telescope.nvim).

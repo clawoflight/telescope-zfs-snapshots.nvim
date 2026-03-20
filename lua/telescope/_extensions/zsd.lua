@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 Bennett Piater
+-- SPDX-License-Identifier: MIT
+--
 -- telescope/_extensions/zsd.lua
 -- Telescope extension for browsing ZFS snapshots via zsd
 

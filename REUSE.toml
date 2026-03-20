@@ -1,0 +1,5 @@
+version = 1
+SPDX-PackageName = "telescope-zfs-snapshots.nvim"
+SPDX-PackageSupplier = "Bennett Piater"
+SPDX-PackageDownloadLocation = "https://github.com/clawoflight/telescope-zfs-snapshots.nvim"
+

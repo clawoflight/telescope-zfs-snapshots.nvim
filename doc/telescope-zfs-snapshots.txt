@@ -1,5 +1,8 @@
 *telescope-zfs-snapshots.txt*   Browse ZFS snapshots via zsd + Telescope
 
+SPDX-FileCopyrightText: 2026 Bennett Piater
+SPDX-License-Identifier: MIT
+
 Author:   Bennett Piater
 License:  MIT
 Requires: telescope.nvim, zsd
