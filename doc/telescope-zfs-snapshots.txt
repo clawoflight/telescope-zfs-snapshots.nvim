@@ -1,0 +1,101 @@
+*telescope-zfs-snapshots.txt*   Browse ZFS snapshots via zsd + Telescope
+
+Author:   Bennett Piater
+License:  MIT
+Requires: telescope.nvim, zsd
+
+==============================================================================
+CONTENTS                                      *telescope-zfs-snapshots-contents*
+
+  1. Introduction ............ |telescope-zfs-snapshots-intro|
+  2. Requirements ............ |telescope-zfs-snapshots-requirements|
+  3. Installation ............ |telescope-zfs-snapshots-install|
+  4. Usage ................... |telescope-zfs-snapshots-usage|
+  5. Keymaps inside picker ... |telescope-zfs-snapshots-keymaps|
+  6. Configuration ........... |telescope-zfs-snapshots-config|
+
+==============================================================================
+1. INTRODUCTION                                  *telescope-zfs-snapshots-intro*
+
+telescope-zfs-snapshots integrates the `zsd` CLI tool with Telescope to let you browse
+the ZFS snapshot history of any file.  A live diff against the current version
+is shown in the preview pane.
+
+==============================================================================
+2. REQUIREMENTS                           *telescope-zfs-snapshots-requirements*
+
+  • Neovim ≥ 0.9
+  • nvim-telescope/telescope.nvim
+  • zsd  (https://github.com/j-keck/zsd) must be on your $PATH
+  • Your files must live on a ZFS dataset that has snapshots
+
+==============================================================================
+3. INSTALLATION                                *telescope-zfs-snapshots-install*
+
+lazy.nvim: >lua
+  {
+    "clawoflight/telescope-zfs-snapshots.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("zsd")
+    end,
+  }
+<
+
+packer.nvim: >lua
+  use {
+    "clawoflight/telescope-zfs-snapshots.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("zsd")
+    end,
+  }
+<
+
+==============================================================================
+4. USAGE                                         *telescope-zfs-snapshots-usage*
+
+Open the picker for the current buffer's file:
+>vim
+  :ZfsSnapshots
+<
+  or from Lua:
+>lua
+  require("telescope").extensions.zsd.snapshots()
+<
+  or via the :Telescope command after loading the extension:
+>vim
+  :Telescope zsd snapshots
+<
+
+Pass an explicit file path:
+>vim
+  :ZfsSnapshots /path/to/some/file.txt
+<
+==============================================================================
+5. KEYMAPS INSIDE PICKER                       *telescope-zfs-snapshots-keymaps*
+
+Inside the Telescope picker the following mappings apply:
+
+  Key       Mode   Action ~
+  <CR>      i/n    Open the snapshot version in a read-only vertical split
+  <M-d>     i/n    Open a vimdiff between the snapshot and the current file
+  <C-c>     i      Close the picker (telescope default)
+  <Esc>     n      Close the picker (telescope default)
+  <C-u>     i/n    Scroll preview up   (telescope default)
+  <C-d>     i/n    Scroll preview down (telescope default)
+
+==============================================================================
+6. CONFIGURATION                                *telescope-zfs-snapshots-config*
+
+No dedicated setup() call is required.  Standard Telescope layout options can
+be passed through to the picker as usual:
+>lua
+  require("telescope").extensions.zsd.snapshots({
+    layout_strategy = "vertical",
+    layout_config   = { preview_height = 0.6 },
+  })
+<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
