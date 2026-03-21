@@ -22,6 +22,7 @@ Each snapshot is listed in the picker; the preview pane shows a live diff agains
 ```lua
 {
   "clawoflight/telescope-zfs-snapshots.nvim",
+  cmd = "ZfsSnapshots",
   dependencies = { "nvim-telescope/telescope.nvim" },
   config = function()
     require("telescope").load_extension("zsd")
