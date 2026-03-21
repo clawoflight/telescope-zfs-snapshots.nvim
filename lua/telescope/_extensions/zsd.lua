@@ -156,7 +156,8 @@ local function open_snapshot_version(prompt_bufnr)
     return
   end
 
-  local content = lines(raw)
+  local content = vim.split(raw, "\n", { plain = true })
+  if content[#content] == "" then table.remove(content) end
   local ext = vim.fn.fnamemodify(entry.file, ":e")
   local snap_short = entry.snapshot:match("@(.+)$") or entry.snapshot
 
@@ -197,7 +198,8 @@ local function open_diff(prompt_bufnr)
     return
   end
 
-  local content     = lines(raw)
+  local content = vim.split(raw, "\n", { plain = true })
+  if content[#content] == "" then table.remove(content) end
   local ext         = vim.fn.fnamemodify(entry.file, ":e")
   local snap_short  = entry.snapshot:match("@(.+)$") or entry.snapshot
   local buf_name    = string.format("zsd://%s/%s", snap_short, vim.fn.fnamemodify(entry.file, ":t"))
