@@ -110,7 +110,7 @@ local diff_previewer = previewers.new_buffer_previewer({
     local bufnr = self.state.bufnr
     local file  = entry.file
     local idx   = entry.index or 0
-    local cmd = string.format("zsd -d 30 '%s' diff %d", file, idx)
+    local cmd = string.format("zsd -no-color -d 30 '%s' diff %d", file, idx)
     local raw, err = run(cmd)
 
     if not raw or raw == "" then
