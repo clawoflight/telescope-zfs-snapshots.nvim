@@ -109,10 +109,8 @@ local diff_previewer = previewers.new_buffer_previewer({
   define_preview = function(self, entry)
     local bufnr = self.state.bufnr
     local file  = entry.file
-    local snap  = entry.snapshot
-
-    local idx = entry.value and entry.value.index or entry.index or 0
-    local cmd = string.format("zsd -d 30 '%s' diff %d 2>&1", file, idx)
+    local idx   = entry.index or 0
+    local cmd = string.format("zsd -d 30 '%s' diff %d", file, idx)
     local raw, err = run(cmd)
 
     if not raw or raw == "" then
@@ -124,13 +122,16 @@ local diff_previewer = previewers.new_buffer_previewer({
     end
 
     -- Write diff output into the preview buffer
-    local diff_lines = lines(raw)
+    -- NOTE: don't use lines() here — blank lines are significant in diffs
+    local diff_lines = vim.split(raw, "\n", { plain = true })
+    -- Remove trailing empty element from final newline
+    if diff_lines[#diff_lines] == "" then
+      table.remove(diff_lines)
+    end
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, diff_lines)
 
     -- Apply diff syntax highlighting
-    vim.api.nvim_buf_call(bufnr, function()
-      vim.cmd("set filetype=diff")
-    end)
+    vim.bo[bufnr].filetype = "diff"
   end,
 })
 
@@ -147,7 +148,7 @@ local function open_snapshot_version(prompt_bufnr)
 
   -- zsd cat prints the file content from the snapshot to stdout.
   -- We create a scratch buffer and fill it with that content.
-  local cmd = string.format("zsd -d 30 '%s' cat %d 2>&1", entry.file, entry.index)
+  local cmd = string.format("zsd -d 30 '%s' cat %d", entry.file, entry.index)
   local raw, err = run(cmd)
 
   if not raw then
@@ -169,9 +170,7 @@ local function open_snapshot_version(prompt_bufnr)
 
   -- Set filetype for syntax highlighting
   if ext ~= "" then
-    vim.api.nvim_buf_call(buf, function()
-      vim.cmd("set filetype=" .. ext)
-    end)
+    vim.bo[buf].filetype = ext
   end
 
   -- Mark buffer as read-only / unmodifiable
@@ -190,7 +189,7 @@ local function open_diff(prompt_bufnr)
 
   if not entry then return end
 
-  local cmd = string.format("zsd -d 30 '%s' cat %d 2>&1", entry.file, entry.index)
+  local cmd = string.format("zsd -d 30 '%s' cat %d", entry.file, entry.index)
   local raw, err = run(cmd)
 
   if not raw then
@@ -216,9 +215,7 @@ local function open_diff(prompt_bufnr)
   pcall(vim.api.nvim_buf_set_name, buf, buf_name)
 
   if ext ~= "" then
-    vim.api.nvim_buf_call(buf, function()
-      vim.cmd("set filetype=" .. ext)
-    end)
+    vim.bo[buf].filetype = ext
   end
 
   vim.bo[buf].modifiable = false
@@ -256,7 +253,7 @@ local function restore_snapshot(prompt_bufnr)
 
       actions.close(prompt_bufnr)
 
-      local cmd = string.format("zsd -d 30 '%s' restore %d 2>&1", entry.file, entry.index)
+      local cmd = string.format("zsd -d 30 '%s' restore %d", entry.file, entry.index)
       local out, err = run(cmd)
 
       if not out then
